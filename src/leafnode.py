@@ -16,11 +16,11 @@ class LeafNode(HTMLNode):
             return f"<{self.tag}>{self.value}</{self.tag}>"
     
     def __repr__(self):
-        return f"LeafNode(tag={self.tag}, value={self.value}, props={self.attributes})"
+        return f"LeafNode(tag={self.tag}, value={self.value}, props={self.props})"
     def __eq__(self, other):
         return (
             isinstance(other, LeafNode) and
             self.tag == other.tag and
             self.value == other.value and
-            self.attributes == other.attributes
+            self.props == other.props
         )
