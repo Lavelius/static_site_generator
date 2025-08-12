@@ -42,3 +42,27 @@ class TextNode:
 	def __repr__(self):
 		return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
 	
+	def split_nodes_delimiter(old_nodes,delimiter,text_type):
+		new_nodes = []
+		for node in old_nodes:
+			if node.text_type != TextType.TEXT:
+				new_nodes.append(node)
+			else:
+				text_parts = node.text.split(delimiter)
+				if len(text_parts) == 1:
+							print("no delimiter found, returning original node")
+							new_nodes.append(node)
+				elif len(text_parts)%2 == 0:
+					raise ValueError("Closing delimiter not found")
+				else:
+					print("delimiter found, splitting nodes")
+					for i in range(len(text_parts)):
+						if text_parts[i] == "":
+							continue
+						elif i%2 == 0:
+							new_nodes.append(TextNode(text_parts[i], node.text_type, node.url))
+						else:
+							new_nodes.append(TextNode(text_parts[i], text_type, node.url))
+		return new_nodes
+	
+	

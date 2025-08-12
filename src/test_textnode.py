@@ -74,5 +74,37 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(repr(node), expected_repr)
 
 
+
+
+
+    def test_split_nodes_delimiter(self):
+        node = TextNode("This is text with a `code block` word", TextType.TEXT)
+        new_nodes = TextNode.split_nodes_delimiter([node], "`", TextType.CODE)
+        self.assertEqual(len(new_nodes), 3)
+        self.assertEqual(new_nodes[0].text, "This is text with a ")
+        self.assertEqual(new_nodes[0].text_type, TextType.TEXT)
+        self.assertEqual(new_nodes[1].text, "code block")
+        self.assertEqual(new_nodes[1].text_type, TextType.CODE)
+        self.assertEqual(new_nodes[2].text, " word")
+        self.assertEqual(new_nodes[2].text_type, TextType.TEXT)
+
+
+    def test_split_nodes_no_delimiter(self):
+        node = TextNode("This is a text node without delimiter", TextType.TEXT)
+        new_nodes = TextNode.split_nodes_delimiter([node], "`", TextType.CODE)
+        self.assertEqual(len(new_nodes), 1)
+        self.assertEqual(new_nodes[0].text, "This is a text node without delimiter")
+        self.assertEqual(new_nodes[0].text_type, TextType.TEXT)
+
+    def test_split_nodes_multiple_delimiters(self):
+        node = TextNode("This is `code` and `another code` block", TextType.TEXT)
+        new_nodes = TextNode.split_nodes_delimiter([node], "`", TextType.CODE)
+        self.assertEqual(len(new_nodes), 5)
+        self.assertEqual(new_nodes[0].text, "This is ")
+        self.assertEqual(new_nodes[1].text, "code")
+        self.assertEqual(new_nodes[2].text, " and ")
+        self.assertEqual(new_nodes[3].text, "another code")
+        self.assertEqual(new_nodes[4].text, " block")
+
 if __name__ == "__main__":
     unittest.main()
