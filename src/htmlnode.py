@@ -1,3 +1,5 @@
+from markdown_to_blocks import Block, BlockType
+
 class HTMLNode():
     def __init__(self, tag = None, value = None, children = None, props = None):
         self.tag = tag
@@ -23,3 +25,10 @@ class HTMLNode():
     
     def __repr__(self):
         return f"HTMLNode(tag={self.tag}, value={self.value}, children={self.children}, props={self.props})"
+    
+
+    def markdown_to_html_node(self, markdown):
+        blocks = Block.markdown_to_blocks(markdown)
+        for block in blocks:
+            
+

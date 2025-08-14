@@ -50,12 +50,10 @@ class TextNode:
 			else:
 				text_parts = node.text.split(delimiter)
 				if len(text_parts) == 1:
-							print("no delimiter found, returning original node")
 							new_nodes.append(node)
 				elif len(text_parts)%2 == 0:
 					raise ValueError("Closing delimiter not found")
 				else:
-					print("delimiter found, splitting nodes")
 					for i in range(len(text_parts)):
 						if text_parts[i] == "":
 							continue
@@ -118,3 +116,20 @@ class TextNode:
 		return new_nodes
 	
 
+	#example text to textnodes: This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)
+	def text_to_textnodes(text):
+		text = text.strip()
+		if not text:
+			return []
+		text = text.replace("\n", " ")
+		text = text.replace("\r", " ")
+		new_nodes = []
+		node = TextNode(text, TextType.TEXT)
+		new_nodes.append(node)
+		new_nodes = TextNode.split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
+		new_nodes = TextNode.split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)
+		new_nodes = TextNode.split_nodes_delimiter(new_nodes, "`", TextType.CODE)
+		new_nodes = TextNode.split_nodes_image(new_nodes)
+		new_nodes = TextNode.split_nodes_link(new_nodes)
+		
+		return new_nodes
