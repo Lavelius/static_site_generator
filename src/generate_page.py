@@ -31,6 +31,9 @@ def generate_page(from_path, template_path, dest_path):
     template = template.replace('{{ Content }}', html_content)
     template = template.replace('{{ Title }}', title if title else 'Untitled Page')
 
+    template = template.replace('href="/', f'href="{dest_path}')
+    template = template.replace('src="/', f'src="{dest_path}')
+
     if not os.path.exists(os.path.dirname(dest_path)):
         os.makedirs(os.path.dirname(dest_path))
     print(f'Writing to {dest_path}')

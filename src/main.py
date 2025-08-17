@@ -1,11 +1,14 @@
+import sys
+
 def remove_directory_contents(directory='public'):
     import os
     import shutil
     directory = os.path.abspath(directory)
     shutil.rmtree(directory, ignore_errors=True)
+    
 
 
-def move_contents_static_to_public(source_dir='static', target_dir='public'):
+def move_contents_static_to_public(source_dir='static', target_dir='docs'):
     import os
     import shutil
     source_dir = os.path.abspath(source_dir)
@@ -23,13 +26,17 @@ def move_contents_static_to_public(source_dir='static', target_dir='public'):
     
 
 def main():
+    basepath = sys.argv[1]
+    if not basepath:
+        basepath = '/'
     remove_directory_contents()
     move_contents_static_to_public()
     import generate_page
     generate_page.generate_pages_recursive(
         'content',
         'template.html',
-        'public'
+        'docs'
+        
     )
 
 
