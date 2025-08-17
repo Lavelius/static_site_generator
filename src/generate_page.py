@@ -1,7 +1,7 @@
 import extract_title
 import markdown_to_html_node
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath='/'):
     import os
     print(f'Generating page from {from_path} using template {template_path} to {dest_path}')
 
@@ -12,6 +12,7 @@ def generate_page(from_path, template_path, dest_path):
 
     from_path = os.path.abspath(from_path)
     template_path = os.path.abspath(template_path)
+    dest_path = os.path.abspath(dest_path)
     with open(from_path, 'r') as from_file:
         content = from_file.read()
         from_file.close()
@@ -30,8 +31,8 @@ def generate_page(from_path, template_path, dest_path):
     template = template.replace('{{ Content }}', html_content)
     template = template.replace('{{ Title }}', title if title else 'Untitled Page')
 
-    template = template.replace('href="/', f'href="{dest_path}')
-    template = template.replace('src="/', f'src="{dest_path}')
+    template = template.replace('href=/', f'href="{basepath}"')
+    template = template.replace('src=/', f'src="{basepath}"')
 
     if not os.path.exists(os.path.dirname(dest_path)):
         os.makedirs(os.path.dirname(dest_path))
@@ -41,7 +42,7 @@ def generate_page(from_path, template_path, dest_path):
         dest_file.close()
     print(f'Page generated at {dest_path}')
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath='/'):
     import os
     dir_path_content = os.path.abspath(dir_path_content)
     template_path = os.path.abspath(template_path)
@@ -60,7 +61,7 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             if item.endswith('.md'):
                 dest_file_path = os.path.join(dest_dir_path, item.replace('.md', '.html'))
                 print(f'Generating page for {item} to {dest_file_path}')
-                generate_page(os.path.join(dir_path_content, item), template_path, dest_file_path)
+                generate_page(os.path.join(dir_path_content, item), template_path, dest_file_path, basepath)
         elif os.path.isdir(os.path.join(dir_path_content,item)):
             print(f'Entering directory: {item}')
             if item.startswith('.'):

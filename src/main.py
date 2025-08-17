@@ -27,15 +27,14 @@ def move_contents_static_to_public(source_dir='static', target_dir='docs'):
 
 def main():
     basepath = sys.argv[1]
-    if not basepath:
-        basepath = '/'
     remove_directory_contents()
     move_contents_static_to_public()
     import generate_page
     generate_page.generate_pages_recursive(
         'content',
         'template.html',
-        'docs'
+        'docs',
+        basepath
         
     )
 
