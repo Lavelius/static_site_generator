@@ -12,7 +12,6 @@ def generate_page(from_path, template_path, dest_path):
 
     from_path = os.path.abspath(from_path)
     template_path = os.path.abspath(template_path)
-    dest_path = os.path.abspath(dest_path)
     with open(from_path, 'r') as from_file:
         content = from_file.read()
         from_file.close()
