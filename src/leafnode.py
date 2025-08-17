@@ -5,10 +5,20 @@ class LeafNode(HTMLNode):
         super().__init__(tag, value, None, props)
 
     def to_html(self):
+        if self.tag is None:
+            if self.value is None or self.value == "":
+                raise ValueError("LeafNode must have a value to convert to HTML.")
+            return self.value
+        
+        # Handle self-closing tags like img
+        if self.tag == "img":
+            attrs = self.props_to_html()
+            return f"<{self.tag} {attrs}>" if attrs else f"<{self.tag}>"
+        
+        # Handle other tags
         if self.value is None:
             raise ValueError("LeafNode must have a value to convert to HTML.")
-        if self.tag is None:
-            return self.value
+        
         attrs = self.props_to_html()
         if attrs:
             return f"<{self.tag} {attrs}>{self.value}</{self.tag}>"

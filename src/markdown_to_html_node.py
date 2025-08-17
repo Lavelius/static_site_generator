@@ -17,7 +17,9 @@ def markdown_to_html_node(markdown):
         elif block_type == BlockType.heading:
             level = block.count('#')
             tag = f'h{level}' if 1 <= level <= 6 else 'h1'
-            nodes.append(ParentNode(tag=tag, children=text_to_html_nodes(block[level:].strip())))
+            # Skip the # characters and any following whitespace
+            heading_text = block.lstrip('#').strip()
+            nodes.append(ParentNode(tag=tag, children=text_to_html_nodes(heading_text)))
         elif block_type == BlockType.code:
             code_content = (block.strip('` ')).strip()
             code_content = code_content.split('\n')
@@ -44,12 +46,18 @@ def markdown_to_html_node(markdown):
 
 
 def text_to_html_nodes(text):
+    
     text_nodes = TextNode.text_to_textnodes(text)
+    
     if not text_nodes:
         return []
-    return [node.text_node_to_html_node() for node in text_nodes]
-
-
-
-#Fake comment for commit for streak.
-#uh oh. again :( I'm a slacker.)
+    html_nodes = []
+    for i, node in enumerate(text_nodes):
+        
+        html_node = node.text_node_to_html_node()
+    
+        # Skip empty text nodes (but keep other empty nodes like img tags)
+        if html_node.tag is None and (html_node.value is None or html_node.value == ""):
+            continue
+        html_nodes.append(html_node)
+    return html_nodes

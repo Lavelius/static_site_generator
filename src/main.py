@@ -25,5 +25,13 @@ def move_contents_static_to_public(source_dir='static', target_dir='public'):
 def main():
     remove_directory_contents()
     move_contents_static_to_public()
+    import generate_page
+    generate_page.generate_pages_recursive(
+        'content',
+        'template.html',
+        'public'
+    )
+
+
 
 main()

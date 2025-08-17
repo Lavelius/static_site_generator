@@ -3,3 +3,4 @@ def extract_title(markdown):
     for line in split_markdown:
         if line.startswith('#') and line[1] != '#':
             return line.lstrip('#').strip()
+    
