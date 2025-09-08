@@ -31,8 +31,8 @@ def generate_page(from_path, template_path, dest_path, basepath='/'):
     template = template.replace('{{ Content }}', html_content)
     template = template.replace('{{ Title }}', title if title else 'Untitled Page')
 
-    template = template.replace('href="/', f'href="{basepath}')
-    template = template.replace('src="/', f'src="{basepath}')
+    template = template.replace('href="/', f'href="{basepath}/')
+    template = template.replace('src="/', f'src="{basepath}/')
 
     if not os.path.exists(os.path.dirname(dest_path)):
         os.makedirs(os.path.dirname(dest_path))
@@ -71,5 +71,5 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, bas
                 os.path.join(dir_path_content, item),
                 template_path,
                 os.path.join(dest_dir_path, item)
-                , basepath.join(item)
+                , os.path.join(basepath, item)
             )
