@@ -31,3 +31,5 @@ class Block:
         else:
             return BlockType.paragraph
     
+
+    
